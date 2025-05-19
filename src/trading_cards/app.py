@@ -1,3 +1,4 @@
+import os
 from typing import List, TypedDict
 
 from trading_cards.card.card_generator import CardGenerator
@@ -44,17 +45,16 @@ class App:
 
             front_file_name = f"{staff_member.name}_front.png"
             back_file_name = f"{staff_member.name}_back.png"
+            save_dir = os.path.join(self.output_dir, staff_member.department.value)
             Helpers.save_canvas(
                 canvas=front_image,
-                sub_dir=staff_member.department.value,
                 file_name=front_file_name,
-                output_dir=self.output_dir,
+                save_dir=save_dir,
             )
             Helpers.save_canvas(
                 canvas=back_image,
-                sub_dir=staff_member.department.value,
                 file_name=back_file_name,
-                output_dir=self.output_dir,
+                save_dir=save_dir,
             )
 
             generated_image_metadata.append(
