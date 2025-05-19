@@ -6,8 +6,9 @@ from trading_cards.staff_member import Department, StaffMember
 
 
 class CSVReader:
-    def __init__(self, file_path: str) -> None:
+    def __init__(self, file_path: str, image_dir: str) -> None:
         self.file_path: str = file_path
+        self.image_dir: str = image_dir
 
     def read_csv(self) -> list[StaffMember]:
         staff_members: list[StaffMember] = []
@@ -50,7 +51,7 @@ class CSVReader:
         errors: list[str] = []
         for sm in staff_members:
             # check that the image exists
-            if not os.path.exists("images/" + sm.image_path):
+            if not os.path.exists(self.image_dir + "/" + sm.image_path):
                 errors.append(
                     f'IMAGE ERROR {i + 2}: The image "{sm.image_path}" for {sm.name} '
                     f"doesn't exist. Check line {i + 2} in the csv file.",
