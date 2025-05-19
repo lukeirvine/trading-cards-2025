@@ -5,13 +5,13 @@ from enum import Enum
 class Department(str, Enum):
     leadership = "leadership"
     extreme = "extreme"
-    housekeeping = "housekeeping"
+    laundry = "laundry"
     office = "office"
     waterfront = "waterfront"
     activities = "activities"
     art = "art"
     challenge = "challenge"
-    comms = "comms"
+    communications = "communications"
     dt = "dt"
     equestrian = "equestrian"
     kitchen = "kitchen"
@@ -19,6 +19,7 @@ class Department(str, Enum):
     survival = "survival"
     ultimate = "ultimate"
     programming = "programming"
+    lifeguard = "lifeguard"
     null = "null"
 
 

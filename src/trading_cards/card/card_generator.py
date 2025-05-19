@@ -21,7 +21,9 @@ class CardGenerator:
     ) -> Tuple[Image.Image, Image.Image]:
         print("Generating card for:", staff_member.name)
 
-        front_canvas: Image.Image = CardFrontGenerator(staff_member).get_card_face()
+        front_canvas: Image.Image = CardFrontGenerator(
+            staff_member, self.image_dir
+        ).get_card_face()
         back_canvas: Image.Image = CardBackGenerator(staff_member).get_card_back()
 
         return (front_canvas, back_canvas)

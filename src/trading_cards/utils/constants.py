@@ -1,4 +1,7 @@
 class Constants:
+    # Paths ========================
+    MATERIAL_PATH: str = "materials"
+
     # Limits ========================
     MAX_YEARS: int = 14
 
