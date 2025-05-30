@@ -83,6 +83,7 @@ class Helpers:
         canvas: Image.Image,
         font_size: int,
         type: TextType,
+        vertical_align: str = "top",
         max_lines: int = 0,
         max_width: int = 0,
         max_height: int = 0,
@@ -113,6 +114,9 @@ class Helpers:
         # Ensure wrap_width is at least 1 to prevent invalid widths
         if wrap_width < 1:
             wrap_width = 1
+
+        # Get original block height
+        original_height: int = get_text_size(text, font)[1]
 
         # Respect max_lines by shrinking the font if needed
         if max_lines > 0:
@@ -147,6 +151,22 @@ class Helpers:
 
         # Calculate height of the text block
         # text_height = sum(get_text_size(line, font)[1] for line in wrapped_lines)
+
+        # Adjust position based on vertical alignment
+        if vertical_align == "center":
+            total_height = sum(get_text_size(line, font)[1] for line in wrapped_lines)
+            print(f"old position: {position}")
+            position = (
+                position[0],
+                (position[1] + (original_height - total_height) // 2 if original_height > 0 else position[1]),
+            )
+            print(f"new position: {position}")
+        elif vertical_align == "bottom":
+            total_height = sum(get_text_size(line, font)[1] for line in wrapped_lines)
+            position = (
+                position[0],
+                (position[1] + (max_height - total_height) if max_height > 0 else position[1]),
+            )
 
         # Draw each line with the calculated position
         pos = list(position)

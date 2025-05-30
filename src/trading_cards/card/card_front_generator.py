@@ -38,13 +38,14 @@ class CardFrontGenerator:
 
         # Add text to card
         Helpers.add_text_to_canvas(
-            text="Kitchen Lead who is really cool",
+            text="Kitchen Lead",
             canvas=self.canvas,
             font_size=12,
             type=TextType.heading,
             position=(constants.FRONT_MARGIN_HORIZONTAL, 885),
             max_width=425,
             max_lines=1,
+            vertical_align="center",
         )
 
         Helpers.add_rect_to_canvas(
