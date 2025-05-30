@@ -4,22 +4,27 @@ repos:
     hooks:
       - id: black
         language_version: python3
+        args:
+          - --line-length=110
 
   - repo: https://github.com/pre-commit/mirrors-isort
     rev: v5.10.1
     hooks:
       - id: isort
+        args:
+          - --profile=black
+          - --line-length=110
 
   - repo: https://github.com/PyCQA/flake8
     rev: 7.2.0
     hooks:
       - id: flake8
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.15.0
+  # Pyright (the same engine VS Code’s Pylance uses)
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.401
     hooks:
-      - id: mypy
-        args: ["--config-file=mypy.ini"]
+      - id: pyright
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0

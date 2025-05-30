@@ -151,7 +151,7 @@ class Helpers:
         # Draw each line with the calculated position
         pos = list(position)
         for line in wrapped_lines:
-            draw.text(tuple(pos), line, font=font, fill=color)
+            draw.text(tuple(pos), line, font=font, fill=color)  # type: ignore[reportUnknownArgumentType]
             pos[1] += get_text_size(line, font)[1]  # Move down for the next line
 
         return canvas
@@ -172,7 +172,7 @@ class Helpers:
 
         # Measure the text height
         dummy_text = "A"
-        bbox = font.getbbox(dummy_text)
+        bbox = font.getbbox(dummy_text)  # type: ignore
         text_height = bbox[3] - bbox[1]
 
         # Adjust the font size to match the desired height
