@@ -1,26 +1,6 @@
 import json
-from enum import Enum
 
-
-class Department(str, Enum):
-    leadership = "leadership"
-    extreme = "extreme"
-    laundry = "laundry"
-    office = "office"
-    waterfront = "waterfront"
-    activities = "activities"
-    art = "art"
-    challenge = "challenge"
-    communications = "communications"
-    dt = "dt"
-    equestrian = "equestrian"
-    kitchen = "kitchen"
-    maintenance = "maintenance"
-    survival = "survival"
-    ultimate = "ultimate"
-    programming = "programming"
-    lifeguard = "lifeguard"
-    null = "null"
+from trading_cards.utils.types import Department
 
 
 class StaffMember:

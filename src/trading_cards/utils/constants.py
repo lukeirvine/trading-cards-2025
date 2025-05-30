@@ -22,8 +22,14 @@ class Constants:
     STAR_ROW_OFFSET: int = -25
     PRINT_WIDTH: int = 825
     PRINT_HEIGHT: int = 1125
+    # Margins ========================
+    FRONT_MARGIN_HORIZONTAL: int = 30
 
     BACK_MARGIN: int = 50
+
+    # Styles ========================
+    HEADING_FONT: str = "fonts/Cleanow-j9v60.ttf"
+    BODY_FONT: str = "fonts/Cleanow-j9v60.ttf"
 
 
 constants: Constants = Constants()

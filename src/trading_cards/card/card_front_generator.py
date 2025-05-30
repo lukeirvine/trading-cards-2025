@@ -6,6 +6,7 @@ from PIL import Image
 from trading_cards.staff_member import StaffMember
 from trading_cards.utils.constants import constants
 from trading_cards.utils.helpers import Helpers
+from trading_cards.utils.types import TextType
 
 
 class CardFrontGenerator:
@@ -33,6 +34,26 @@ class CardFrontGenerator:
             ),
             (constants.CARD_WIDTH, constants.CARD_HEIGHT),
             (0, 0),
+        )
+
+        # Add text to card
+        Helpers.add_text_to_canvas(
+            text="Kitchen Lead who is really cool",
+            canvas=self.canvas,
+            font_size=12,
+            type=TextType.heading,
+            position=(constants.FRONT_MARGIN_HORIZONTAL, 885),
+            max_width=425,
+            max_lines=1,
+        )
+
+        Helpers.add_rect_to_canvas(
+            self.canvas,
+            (
+                constants.FRONT_MARGIN_HORIZONTAL + 425,
+                885,
+            ),
+            (5, 100),
         )
 
         return self.canvas
