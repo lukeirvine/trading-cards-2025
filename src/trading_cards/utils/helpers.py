@@ -134,8 +134,10 @@ class Helpers:
                 wrap_w = max(wrap_w, 1)
 
                 lines = textwrap.wrap(text, width=wrap_w * 2)
+                # enforce max width: measure longest wrapped line
+                max_line_width = max(get_text_size(line, font)[0] for line in lines) if lines else 0
                 # stop if it fits or font is already minimal
-                if len(lines) <= max_lines or current_size <= 1:
+                if (len(lines) <= max_lines and max_line_width <= max_width) or current_size <= 1:
                     wrapped_lines = lines
                     break
                 current_size -= 1
@@ -155,12 +157,10 @@ class Helpers:
         # Adjust position based on vertical alignment
         if vertical_align == "center":
             total_height = sum(get_text_size(line, font)[1] for line in wrapped_lines)
-            print(f"old position: {position}")
             position = (
                 position[0],
                 (position[1] + (original_height - total_height) // 2 if original_height > 0 else position[1]),
             )
-            print(f"new position: {position}")
         elif vertical_align == "bottom":
             total_height = sum(get_text_size(line, font)[1] for line in wrapped_lines)
             position = (
@@ -187,17 +187,19 @@ class Helpers:
     @staticmethod
     def get_font(font_path: str, font_size: int) -> ImageFont.FreeTypeFont:
         font = ImageFont.truetype(font_path, font_size)
-        # default font size
-        size = 36
 
         # Measure the text height
         dummy_text = "A"
         bbox = font.getbbox(dummy_text)  # type: ignore
         text_height = bbox[3] - bbox[1]
 
+        # default font size
+        size = font_size / text_height
+
         # Adjust the font size to match the desired height
-        adjusted_size = int(size * font_size / text_height)
-        return ImageFont.truetype(font_path, adjusted_size)
+        adjusted_size = int(size * font_size)
+        font = ImageFont.truetype(font_path, adjusted_size)
+        return font
 
     @staticmethod
     def add_rect_to_canvas(

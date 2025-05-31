@@ -23,7 +23,7 @@ class Constants:
     PRINT_WIDTH: int = 825
     PRINT_HEIGHT: int = 1125
     # Margins ========================
-    FRONT_MARGIN_HORIZONTAL: int = 30
+    FRONT_MARGIN_HORIZONTAL: int = 20
 
     BACK_MARGIN: int = 50
 

@@ -38,9 +38,9 @@ class CardFrontGenerator:
 
         # Add text to card
         Helpers.add_text_to_canvas(
-            text="Kitchen Lead",
+            text=self.staff_member.position,
             canvas=self.canvas,
-            font_size=12,
+            font_size=30,
             type=TextType.heading,
             position=(constants.FRONT_MARGIN_HORIZONTAL, 885),
             max_width=425,
@@ -48,13 +48,24 @@ class CardFrontGenerator:
             vertical_align="center",
         )
 
+        Helpers.add_text_to_canvas(
+            text=self.staff_member.name,
+            canvas=self.canvas,
+            font_size=60,
+            type=TextType.heading,
+            position=(constants.FRONT_MARGIN_HORIZONTAL, 950),
+            max_width=675,
+            max_lines=1,
+            vertical_align="center",
+        )
+
         Helpers.add_rect_to_canvas(
             self.canvas,
             (
-                constants.FRONT_MARGIN_HORIZONTAL + 425,
+                constants.FRONT_MARGIN_HORIZONTAL + 675,
                 885,
             ),
-            (5, 100),
+            (5, 150),
         )
 
         return self.canvas
