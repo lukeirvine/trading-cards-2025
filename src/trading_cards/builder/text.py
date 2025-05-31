@@ -3,13 +3,13 @@ from typing import Optional
 
 from PIL import Image, ImageDraw, ImageFont
 
-from trading_cards.utils.types import TextType
+from trading_cards.utils.types import ProseData, TextType
 
 
 class TextBuilder:
     @staticmethod
     def add_body_to_canvas(
-        text: list[str],
+        text: ProseData,
         canvas: Image.Image,
         max_width: Optional[int] = None,
         max_height: Optional[int] = None,
@@ -22,8 +22,8 @@ class TextBuilder:
         canvas: Image.Image,
         type: TextType,
         vertical_align: str = "top",
-        max_lines: int = 0,
-        max_width: int = 0,
+        max_lines: Optional[int] = None,
+        max_width: Optional[int] = None,
         max_height: int = 0,
         position: tuple[int, int] = (0, 0),
         color: tuple[int, int, int] = (0, 0, 0),
@@ -38,12 +38,16 @@ class TextBuilder:
             return bbox[2] - bbox[0], bbox[3] - bbox[1]
 
         def calculate_wrap_width(font: ImageFont.FreeTypeFont) -> int:
+            local_max_width = max_width
+            if local_max_width is None:
+                # If no max_width is provided, use the canvas width
+                local_max_width = canvas.width - position[0]
             avg_char_width = get_text_size("W" * 10, font)[0] / 10
-            return int(max_width // avg_char_width) - 1
+            return int(local_max_width // avg_char_width) - 1
 
         # Calculate wrap width
         # If no max_width provided, default to remaining canvas width
-        if max_width <= 0:
+        if max_width is not None:
             max_width = canvas.width - position[0]
         wrap_width = calculate_wrap_width(font)
         # Ensure wrap_width is at least 1 to prevent invalid widths
@@ -54,7 +58,7 @@ class TextBuilder:
         original_height: int = get_text_size(text, font)[1]
 
         # Respect max_lines by shrinking the font if needed
-        if max_lines > 0:
+        if max_lines is not None:
             current_size = font_size
             while True:
                 # pick the right font for this size
@@ -64,15 +68,16 @@ class TextBuilder:
                     else TextBuilder.get_font(type.font_path, current_size)
                 )
                 # recalc avg char width → wrap_width
-                avg_char_width = get_text_size("W" * 10, font)[0] / 10
-                wrap_w = int(max_width // avg_char_width) - 1
+                wrap_w = calculate_wrap_width(font)
                 wrap_w = max(wrap_w, 1)
 
                 lines = textwrap.wrap(text, width=wrap_w * 2)
                 # enforce max width: measure longest wrapped line
                 max_line_width = max(get_text_size(line, font)[0] for line in lines) if lines else 0
                 # stop if it fits or font is already minimal
-                if (len(lines) <= max_lines and max_line_width <= max_width) or current_size <= 1:
+                if (
+                    len(lines) <= max_lines and (max_width is None or max_line_width <= max_width)
+                ) or current_size <= 1:
                     wrapped_lines = lines
                     break
                 current_size -= 1
