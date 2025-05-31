@@ -3,9 +3,11 @@ from typing import Tuple
 
 from PIL import Image
 
+from trading_cards.builder.image import ImageBuilder
+from trading_cards.builder.shape import ShapeBuilder
+from trading_cards.builder.text import TextBuilder
 from trading_cards.staff_member import StaffMember
 from trading_cards.utils.constants import constants
-from trading_cards.utils.helpers import Helpers
 from trading_cards.utils.types import TextType
 
 
@@ -18,7 +20,7 @@ class CardFrontGenerator:
 
     def get_card_face(self) -> Image.Image:
         # Add main image to card
-        Helpers.add_image_to_canvas(
+        ImageBuilder.add_image_to_canvas(
             self.canvas,
             os.path.join(self.image_dir, self.staff_member.image_path),
             (constants.CARD_WIDTH, constants.CARD_HEIGHT),
@@ -26,7 +28,7 @@ class CardFrontGenerator:
         )
 
         # Add border to card
-        Helpers.add_mask_to_canvas(
+        ImageBuilder.add_mask_to_canvas(
             self.canvas,
             os.path.join(
                 constants.MATERIAL_PATH,
@@ -37,7 +39,7 @@ class CardFrontGenerator:
         )
 
         # Add text to card
-        Helpers.add_text_to_canvas(
+        TextBuilder.add_text_to_canvas(
             text=self.staff_member.position,
             canvas=self.canvas,
             font_size=30,
@@ -48,7 +50,7 @@ class CardFrontGenerator:
             vertical_align="center",
         )
 
-        Helpers.add_text_to_canvas(
+        TextBuilder.add_text_to_canvas(
             text=self.staff_member.name,
             canvas=self.canvas,
             font_size=60,
@@ -59,7 +61,7 @@ class CardFrontGenerator:
             vertical_align="center",
         )
 
-        Helpers.add_rect_to_canvas(
+        ShapeBuilder.add_rect_to_canvas(
             self.canvas,
             (
                 constants.FRONT_MARGIN_HORIZONTAL + 675,
