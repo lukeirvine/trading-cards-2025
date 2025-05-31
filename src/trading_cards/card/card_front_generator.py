@@ -41,8 +41,7 @@ class CardFrontGenerator:
         TextBuilder.add_text_to_canvas(
             text=self.staff_member.position,
             canvas=self.canvas,
-            font_size=30,
-            type=TextType.heading,
+            type=TextType.h2,
             position=(constants.FRONT_MARGIN_HORIZONTAL, 885),
             max_width=425,
             max_lines=1,
@@ -52,8 +51,7 @@ class CardFrontGenerator:
         TextBuilder.add_text_to_canvas(
             text=self.staff_member.name,
             canvas=self.canvas,
-            font_size=60,
-            type=TextType.heading,
+            type=TextType.h1,
             position=(constants.FRONT_MARGIN_HORIZONTAL, 950),
             max_width=675,
             max_lines=1,

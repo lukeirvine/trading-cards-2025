@@ -1,17 +1,25 @@
 import textwrap
+from typing import Optional
 
 from PIL import Image, ImageDraw, ImageFont
 
-from trading_cards.utils.constants import constants
 from trading_cards.utils.types import TextType
 
 
 class TextBuilder:
     @staticmethod
+    def add_body_to_canvas(
+        text: list[str],
+        canvas: Image.Image,
+        max_width: Optional[int] = None,
+        max_height: Optional[int] = None,
+    ) -> Image.Image:
+        return canvas
+
+    @staticmethod
     def add_text_to_canvas(
         text: str,
         canvas: Image.Image,
-        font_size: int,
         type: TextType,
         vertical_align: str = "top",
         max_lines: int = 0,
@@ -20,12 +28,9 @@ class TextBuilder:
         position: tuple[int, int] = (0, 0),
         color: tuple[int, int, int] = (0, 0, 0),
     ) -> Image.Image:
-        if type == TextType.heading:
-            font = TextBuilder.get_title_font(font_size)
-        elif type == TextType.body:
-            font = TextBuilder.get_body_font(font_size)
-        else:
-            raise ValueError(f"Invalid text type: {type}")
+        font_size = type.base_size
+        font = TextBuilder.get_font(type.font_path, font_size)
+
         draw: ImageDraw.ImageDraw = ImageDraw.Draw(canvas)
 
         def get_text_size(text: str, font: ImageFont.FreeTypeFont) -> tuple[int, int]:
@@ -54,9 +59,9 @@ class TextBuilder:
             while True:
                 # pick the right font for this size
                 font = (
-                    TextBuilder.get_title_font(current_size)
-                    if type == TextType.heading
-                    else TextBuilder.get_body_font(current_size)
+                    TextBuilder.get_font(type.font_path, current_size)
+                    if type == TextType.h1 or type == TextType.h2 or type == TextType.h3
+                    else TextBuilder.get_font(type.font_path, current_size)
                 )
                 # recalc avg char width → wrap_width
                 avg_char_width = get_text_size("W" * 10, font)[0] / 10
@@ -74,9 +79,9 @@ class TextBuilder:
 
             # finally, re‐load the font at the reduced size
             font = (
-                TextBuilder.get_title_font(current_size)
-                if type == TextType.heading
-                else TextBuilder.get_body_font(current_size)
+                TextBuilder.get_font(type.font_path, current_size)
+                if type == TextType.h1 or type == TextType.h2 or type == TextType.h3
+                else TextBuilder.get_font(type.font_path, current_size)
             )
         else:
             wrapped_lines = textwrap.wrap(text, width=wrap_width * 2)
@@ -105,14 +110,6 @@ class TextBuilder:
             pos[1] += get_text_size(line, font)[1]  # Move down for the next line
 
         return canvas
-
-    @staticmethod
-    def get_title_font(font_size: int) -> ImageFont.FreeTypeFont:
-        return TextBuilder.get_font(constants.HEADING_FONT, font_size)
-
-    @staticmethod
-    def get_body_font(font_size: int) -> ImageFont.FreeTypeFont:
-        return TextBuilder.get_font(constants.BODY_FONT, font_size)
 
     @staticmethod
     def get_font(font_path: str, font_size: int) -> ImageFont.FreeTypeFont:
