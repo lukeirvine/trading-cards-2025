@@ -1,3 +1,5 @@
+from typing import Optional
+
 from PIL import Image
 
 
@@ -19,6 +21,7 @@ class ImageBuilder:
         mask_path: str,
         size: tuple[int, int],
         position: tuple[int, int],
+        fill: Optional[tuple[int, int, int]] = None,
     ) -> None:
         # Open the mask image with an alpha channel
         image = Image.open(mask_path).convert("RGBA")
@@ -26,8 +29,14 @@ class ImageBuilder:
         image = ImageBuilder.resize_and_crop_image(image, size)
         # Use the image’s own alpha channel as the mask
         alpha = image.split()[-1]
-        # Paste the RGBA image onto the canvas, preserving transparency
-        canvas.paste(image, position, alpha)
+        if fill is not None:
+            # Create a solid color image with the same size, apply the original alpha
+            solid = Image.new("RGBA", image.size, fill + (0,))
+            solid.putalpha(alpha)
+            canvas.paste(solid, position, alpha)
+        else:
+            # Paste the original RGBA image onto the canvas, preserving transparency
+            canvas.paste(image, position, alpha)
 
     @staticmethod
     def resize_and_crop_image(image: Image.Image, size: tuple[int, int]) -> Image.Image:

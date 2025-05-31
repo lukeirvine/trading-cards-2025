@@ -4,7 +4,6 @@ from typing import Tuple
 from PIL import Image
 
 from trading_cards.builder.image import ImageBuilder
-from trading_cards.builder.shape import ShapeBuilder
 from trading_cards.builder.text import TextBuilder
 from trading_cards.staff_member import StaffMember
 from trading_cards.utils.constants import constants
@@ -61,13 +60,18 @@ class CardFrontGenerator:
             vertical_align="center",
         )
 
-        ShapeBuilder.add_rect_to_canvas(
-            self.canvas,
-            (
-                constants.FRONT_MARGIN_HORIZONTAL + 675,
-                885,
-            ),
-            (5, 150),
-        )
+        # Stars
+        star_count = self.staff_member.years_worked
+        if star_count > 13:
+            star_count = 13
+        for i in range(0, star_count):
+            star_size = 55
+            increment = star_size - 3
+            ImageBuilder.add_mask_to_canvas(
+                canvas=self.canvas,
+                mask_path=os.path.join(constants.MATERIAL_PATH, "star.png"),
+                size=(star_size, star_size),
+                position=(11, 150 + i * increment),
+            )
 
         return self.canvas
