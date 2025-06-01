@@ -23,8 +23,6 @@ class CardGenerator:
         self.use_print_layout: bool = use_print_layout
 
     def generate_card(self, staff_member: StaffMember) -> Tuple[Image.Image, Image.Image]:
-        print("Generating card for:", staff_member.name)
-
         front_canvas: Image.Image = CardFrontGenerator(staff_member, self.image_dir).get_card_face()
         back_canvas: Image.Image = CardBackGenerator(staff_member).get_card_back()
 

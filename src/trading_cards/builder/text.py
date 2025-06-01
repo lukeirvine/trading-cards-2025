@@ -3,6 +3,7 @@ from typing import Optional, TypedDict
 
 from PIL import Image, ImageDraw, ImageFont
 
+from trading_cards.utils.logger import Logger, PrintColor
 from trading_cards.utils.types import ProseData, TextType
 
 
@@ -46,10 +47,11 @@ class TextBuilder:
 
             # Check overflow status and move on or restart.
             if max_height is not None and y_pos > position[1] + max_height:
-                print(
+                Logger.log(
                     "Adjusted back font size. "
                     f"Max pos: {position[1] + max_height if max_height else None}, "
-                    f"Y position: {y_pos}"
+                    f"Y position: {y_pos}",
+                    PrintColor.YELLOW,
                 )
                 font_size_adjustment += 1
                 y_pos = position[1]
