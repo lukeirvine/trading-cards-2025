@@ -33,11 +33,13 @@ class CardBackGenerator:
             body_text.append({"text": question["question"], "type": TextType.h2})
             body_text.append({"text": question["answer"], "type": TextType.body})
 
+        body_start_pos = 180
         TextBuilder.add_body_to_canvas(
             text=body_text,
             canvas=self.canvas,
-            position=(constants.BACK_MARGIN_HORIZONTAL, 180),
+            position=(constants.BACK_MARGIN_HORIZONTAL, body_start_pos),
             max_width=constants.CARD_WIDTH - constants.BACK_MARGIN_HORIZONTAL * 2,
+            max_height=constants.CARD_HEIGHT - constants.BACK_MARGIN_BOTTOM - body_start_pos,
         )
 
         return self.canvas

@@ -9,6 +9,7 @@ from trading_cards.utils.types import ProseData, TextType
 class TextResults(TypedDict):
     line_count: int
     line_height: int
+    lines: list[str]
 
 
 class TextBuilder:
@@ -17,25 +18,54 @@ class TextBuilder:
         text: ProseData,
         canvas: Image.Image,
         max_width: Optional[int] = None,
-        max_lines: Optional[int] = None,
+        max_height: Optional[int] = None,
         position: tuple[int, int] = (0, 0),
         color: tuple[int, int, int] = (0, 0, 0),
     ) -> Image.Image:
-        y_pos: int = position[1]
-        for item in text:
-            results = TextBuilder.add_text_to_canvas(
-                text=item["text"],
-                canvas=canvas,
-                type=item["type"],
-                max_lines=max_lines,
-                max_width=max_width,
-                position=(position[0], y_pos),
-                color=color,
-            )
+        font_size_adjustment = 0
+        skip_draw = True
+        while True:
+            y_pos: int = position[1]
+            results: TextResults
+            for item in text:
+                results = TextBuilder.add_text_to_canvas(
+                    text=item["text"],
+                    canvas=canvas,
+                    type=item["type"],
+                    max_width=max_width,
+                    position=(position[0], y_pos),
+                    color=color,
+                    skip_draw=skip_draw,
+                    font_size_adjustment=font_size_adjustment,
+                )
 
-            y_pos += int(results["line_height"] * results["line_count"] + item["type"].margin_after)
+                y_pos += int(results["line_height"] * results["line_count"] + item["type"].margin_after)
+
+            if not skip_draw:
+                break
+
+            # Check overflow status and move on or restart.
+            if max_height is not None and y_pos > position[1] + max_height:
+                print(
+                    "Adjusted back font size. "
+                    f"Max pos: {position[1] + max_height if max_height else None}, "
+                    f"Y position: {y_pos}"
+                )
+                font_size_adjustment += 1
+                y_pos = position[1]
+            else:
+                skip_draw = False
 
         return canvas
+
+    @staticmethod
+    def get_text_size(
+        draw: ImageDraw.ImageDraw,
+        text: str,
+        font: ImageFont.FreeTypeFont,
+    ) -> tuple[int, int]:
+        bbox = draw.textbbox((0, 0), text, font=font)
+        return bbox[2] - bbox[0], bbox[3] - bbox[1]
 
     @staticmethod
     def add_text_to_canvas(
@@ -48,15 +78,16 @@ class TextBuilder:
         max_height: int = 0,
         position: tuple[int, int] = (0, 0),
         color: tuple[int, int, int] = (0, 0, 0),
+        skip_draw: bool = False,
+        font_size_adjustment: int = 0,
     ) -> TextResults:
-        font_size = type.base_size
+        font_size = type.base_size - font_size_adjustment
         font = TextBuilder.get_font(type.font_path, font_size)
 
         draw: ImageDraw.ImageDraw = ImageDraw.Draw(canvas)
 
         def get_text_size(text: str, font: ImageFont.FreeTypeFont) -> tuple[int, int]:
-            bbox = draw.textbbox((0, 0), text, font=font)
-            return bbox[2] - bbox[0], bbox[3] - bbox[1]
+            return TextBuilder.get_text_size(draw, text, font)
 
         def calculate_wrap_width(font: ImageFont.FreeTypeFont) -> int:
             local_max_width = max_width
@@ -79,7 +110,7 @@ class TextBuilder:
         original_height: int = get_text_size(text, font)[1]
 
         # Respect max_lines by shrinking the font if needed
-        wrap_adjustment = 1.75
+        wrap_adjustment = 1.65
         if max_lines is not None:
             current_size = font_size
             while True:
@@ -130,15 +161,13 @@ class TextBuilder:
                 (position[1] + (max_height - total_height) if max_height > 0 else position[1]),
             )
 
-        # Draw each line with the calculated position
-        pos = list(position)
-        for line in wrapped_lines:
-            draw.text(tuple(pos), line, font=font, fill=color)  # type: ignore[reportUnknownArgumentType]
-            pos[1] += get_text_size(line, font)[1]  # Move down for the next line
+        if not skip_draw:
+            TextBuilder.draw_lines_on_canvas(canvas, wrapped_lines, font, position, color)
 
         return {
             "line_count": len(wrapped_lines),
             "line_height": (get_text_size(wrapped_lines[0], font)[1] if wrapped_lines else 0),
+            "lines": wrapped_lines,
         }
 
     @staticmethod
@@ -157,3 +186,17 @@ class TextBuilder:
         adjusted_size = int(size * font_size)
         font = ImageFont.truetype(font_path, adjusted_size)
         return font
+
+    @staticmethod
+    def draw_lines_on_canvas(
+        canvas: Image.Image,
+        lines: list[str],
+        font: ImageFont.FreeTypeFont,
+        position: tuple[int, int] = (0, 0),
+        color: tuple[int, int, int] = (0, 0, 0),
+    ) -> None:
+        draw: ImageDraw.ImageDraw = ImageDraw.Draw(canvas)
+        pos = list(position)
+        for line in lines:
+            draw.text(tuple(pos), line, font=font, fill=color)  # type: ignore[reportUnknownArgumentType]
+            pos[1] += TextBuilder.get_text_size(draw, line, font)[1]  # Move down for the next line

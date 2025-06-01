@@ -13,7 +13,7 @@ class Constants:
     # Margins ========================
     FRONT_MARGIN_HORIZONTAL: int = 20
     BACK_MARGIN_HORIZONTAL: int = 80
-    BACK_MARGIN_BOTTOM: int = 100
+    BACK_MARGIN_BOTTOM: int = 150
 
     BACK_MARGIN: int = 50
 
