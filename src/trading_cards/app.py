@@ -1,17 +1,10 @@
 import os
-from typing import List, TypedDict
+from typing import List
 
 from trading_cards.card.card_generator import CardGenerator
 from trading_cards.csv_reader import CSVReader
-from trading_cards.staff_member import Department, StaffMember
-from trading_cards.utils.helpers import Helpers
-
-
-class GeneratedImageMetadata(TypedDict):
-    front_file_name: str
-    back_file_name: str
-    department: Department
-    years: int
+from trading_cards.exporter import Exporter, GeneratedImageMetadata
+from trading_cards.staff_member import StaffMember
 
 
 class App:
@@ -22,12 +15,14 @@ class App:
         output_dir: str,
         generate_pdfs: bool = False,
         use_print_layout: bool = False,
+        debug_mode: bool = False,
     ) -> None:
         self.csv_file_path: str = csv_file_path
         self.image_dir: str = image_dir
         self.output_dir: str = output_dir
         self.generate_pdfs: bool = generate_pdfs
         self.use_print_layout: bool = use_print_layout
+        self.debug_mode: bool = debug_mode
 
     def run(self) -> None:
         reader = CSVReader(self.csv_file_path, self.image_dir)
@@ -46,12 +41,12 @@ class App:
             front_file_name = f"{staff_member.name}_front.png"
             back_file_name = f"{staff_member.name}_back.png"
             save_dir = os.path.join(self.output_dir, staff_member.department.label)
-            Helpers.save_canvas(
+            Exporter.save_canvas(
                 canvas=front_image,
                 file_name=front_file_name,
                 save_dir=save_dir,
             )
-            Helpers.save_canvas(
+            Exporter.save_canvas(
                 canvas=back_image,
                 file_name=back_file_name,
                 save_dir=save_dir,
@@ -68,3 +63,11 @@ class App:
             print(f"Generated card for {staff_member.name}")
 
         print("=========================================")
+
+        if self.generate_pdfs:
+            Exporter.save_pdf(
+                card_data=generated_image_metadata,
+                output_dir=self.output_dir,
+                debug_mode=self.debug_mode,
+            )
+            print("PDFs generated successfully.")

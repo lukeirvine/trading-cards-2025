@@ -21,11 +21,7 @@ class ChangeHandler(FileSystemEventHandler):
         else:
             src_path = str(raw_path)
         # Ignore directories, temporary files, and files in the ignore folder
-        if (
-            event.is_directory
-            or src_path.endswith(("~", ".swp", ".tmp"))
-            or self.ignore_folder in src_path
-        ):
+        if event.is_directory or src_path.endswith(("~", ".swp", ".tmp")) or self.ignore_folder in src_path:
             return
         print(f"{src_path} has been modified. Debouncing...")
         if self.timer:
@@ -35,7 +31,7 @@ class ChangeHandler(FileSystemEventHandler):
 
     def run_script(self) -> None:
         print(f"Running {self.script_to_run}...")
-        subprocess.call([sys.executable, self.script_to_run])
+        subprocess.call([sys.executable, self.script_to_run, "--from-watcher"])
 
 
 if __name__ == "__main__":
