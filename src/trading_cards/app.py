@@ -1,7 +1,7 @@
 import os
 from typing import List
 
-from trading_cards.card.card_generator import CardGenerator
+from trading_cards.card.card_generator import CardGenerator, Side
 from trading_cards.csv_reader import CSVReader
 from trading_cards.exporter import Exporter, GeneratedImageMetadata
 from trading_cards.staff_member import StaffMember
@@ -39,6 +39,10 @@ class App:
         for staff_member in staff_members:
             front_image, back_image = generator.generate_card(staff_member)
 
+            if self.use_print_layout:
+                front_image = generator.add_print_layout(front_image, staff_member, Side.FRONT)
+                back_image = generator.add_print_layout(back_image, staff_member, Side.BACK)
+
             front_file_name = f"{staff_member.name}_front.png"
             back_file_name = f"{staff_member.name}_back.png"
             save_dir = os.path.join(self.output_dir, staff_member.department.label)
@@ -63,7 +67,7 @@ class App:
             )
             print(f"Generated card for {staff_member.name}")
 
-        Logger.log_line()
+            Logger.log_line()
 
         if self.generate_pdfs:
             Exporter.save_pdf(

@@ -39,33 +39,37 @@ class TextColor(tuple[int, int, int], Enum):
 
 
 class Department(Enum):
-    leadership = ("leadership", TextColor.black)
-    extreme = "extreme"
-    laundry = "laundry"
-    office = "office"
-    waterfront = "waterfront"
-    activities = ("activities", TextColor.black)
-    art = ("art", TextColor.black)
-    challenge = ("challenge", TextColor.black)
-    communications = "communications"
-    equestrian = "equestrian"
-    kitchen = "kitchen"
-    maintenance = "maintenance"
-    programming = ("programming", TextColor.black)
-    lifeguard = "lifeguard"
-    null = "null"
+    leadership = ("leadership", (191, 214, 250), TextColor.black)
+    extreme = ("extreme", (0, 0, 0))
+    laundry = ("laundry", (0, 0, 0))
+    office = ("office", (0, 0, 0))
+    waterfront = ("waterfront", (0, 0, 0))
+    activities = ("activities", (0, 0, 0), TextColor.black)
+    art = ("art", (0, 0, 0), TextColor.black)
+    challenge = ("challenge", (0, 0, 0), TextColor.black)
+    communications = ("communications", (0, 0, 0))
+    equestrian = ("equestrian", (0, 0, 0))
+    kitchen = ("kitchen", (0, 0, 0))
+    maintenance = ("maintenance", (0, 0, 0))
+    programming = ("programming", (0, 0, 0), TextColor.black)
+    lifeguard = ("lifeguard", (0, 0, 0))
+    null = ("null", (0, 0, 0))
 
     def __init__(
         self,
         label: str,
+        bg_color: tuple[int, int, int],
         text_color: TextColor = TextColor.white,
     ):
         self.label = label
+        self.bg_color = bg_color
         self.text_color = text_color
 
     def __getitem__(self, item: str):
         if item == "label":
             return self.label
+        elif item == "bg_color":
+            return self.bg_color
         elif item == "text_color":
             return self.text_color
         else:
