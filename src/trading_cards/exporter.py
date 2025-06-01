@@ -36,6 +36,9 @@ class Exporter:
             os.makedirs(pdf_folder)
 
         timestamp = datetime.datetime.now().strftime("%Y:%m:%d %H-%M-%S") if not debug_mode else "debug"
+        if not os.path.exists(os.path.join(pdf_folder, timestamp)):
+            os.makedirs(os.path.join(pdf_folder, timestamp))
+        pdf_folder = os.path.join(pdf_folder, timestamp)
         pdf_path = f"{pdf_folder}/mivoden-trading-cards-{timestamp}.pdf"
         pdf_rarity_path = f"{pdf_folder}/mivoden-trading-cards-rarity-{timestamp}.pdf"
 
