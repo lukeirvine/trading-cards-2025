@@ -48,12 +48,9 @@ class Department(Enum):
     art = ("art", TextColor.black)
     challenge = ("challenge", TextColor.black)
     communications = "communications"
-    dt = "dt"
     equestrian = "equestrian"
     kitchen = "kitchen"
     maintenance = "maintenance"
-    survival = "survival"
-    ultimate = "ultimate"
     programming = ("programming", TextColor.black)
     lifeguard = "lifeguard"
     null = "null"
