@@ -1,9 +1,14 @@
 import textwrap
-from typing import Optional
+from typing import Optional, TypedDict
 
 from PIL import Image, ImageDraw, ImageFont
 
 from trading_cards.utils.types import ProseData, TextType
+
+
+class TextResults(TypedDict):
+    line_count: int
+    line_height: int
 
 
 class TextBuilder:
@@ -12,8 +17,24 @@ class TextBuilder:
         text: ProseData,
         canvas: Image.Image,
         max_width: Optional[int] = None,
-        max_height: Optional[int] = None,
+        max_lines: Optional[int] = None,
+        position: tuple[int, int] = (0, 0),
+        color: tuple[int, int, int] = (0, 0, 0),
     ) -> Image.Image:
+        y_pos: int = position[1]
+        for item in text:
+            results = TextBuilder.add_text_to_canvas(
+                text=item["text"],
+                canvas=canvas,
+                type=item["type"],
+                max_lines=max_lines,
+                max_width=max_width,
+                position=(position[0], y_pos),
+                color=color,
+            )
+
+            y_pos += int(results["line_height"] * results["line_count"] + item["type"].margin_after)
+
         return canvas
 
     @staticmethod
@@ -27,7 +48,7 @@ class TextBuilder:
         max_height: int = 0,
         position: tuple[int, int] = (0, 0),
         color: tuple[int, int, int] = (0, 0, 0),
-    ) -> Image.Image:
+    ) -> TextResults:
         font_size = type.base_size
         font = TextBuilder.get_font(type.font_path, font_size)
 
@@ -58,6 +79,7 @@ class TextBuilder:
         original_height: int = get_text_size(text, font)[1]
 
         # Respect max_lines by shrinking the font if needed
+        wrap_adjustment = 1.75
         if max_lines is not None:
             current_size = font_size
             while True:
@@ -71,7 +93,7 @@ class TextBuilder:
                 wrap_w = calculate_wrap_width(font)
                 wrap_w = max(wrap_w, 1)
 
-                lines = textwrap.wrap(text, width=wrap_w * 2)
+                lines = textwrap.wrap(text, width=int(wrap_w * wrap_adjustment))
                 # enforce max width: measure longest wrapped line
                 max_line_width = max(get_text_size(line, font)[0] for line in lines) if lines else 0
                 # stop if it fits or font is already minimal
@@ -89,7 +111,7 @@ class TextBuilder:
                 else TextBuilder.get_font(type.font_path, current_size)
             )
         else:
-            wrapped_lines = textwrap.wrap(text, width=wrap_width * 2)
+            wrapped_lines = textwrap.wrap(text, width=int(wrap_width * wrap_adjustment))
 
         # Calculate height of the text block
         # text_height = sum(get_text_size(line, font)[1] for line in wrapped_lines)
@@ -114,7 +136,10 @@ class TextBuilder:
             draw.text(tuple(pos), line, font=font, fill=color)  # type: ignore[reportUnknownArgumentType]
             pos[1] += get_text_size(line, font)[1]  # Move down for the next line
 
-        return canvas
+        return {
+            "line_count": len(wrapped_lines),
+            "line_height": (get_text_size(wrapped_lines[0], font)[1] if wrapped_lines else 0),
+        }
 
     @staticmethod
     def get_font(font_path: str, font_size: int) -> ImageFont.FreeTypeFont:

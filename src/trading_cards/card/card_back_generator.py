@@ -4,8 +4,10 @@ from typing import Tuple
 from PIL import Image
 
 from trading_cards.builder.image import ImageBuilder
+from trading_cards.builder.text import TextBuilder
 from trading_cards.staff_member import StaffMember
 from trading_cards.utils.constants import constants
+from trading_cards.utils.types import ProseData, TextType
 
 
 class CardBackGenerator:
@@ -24,6 +26,18 @@ class CardBackGenerator:
             ),
             (constants.CARD_WIDTH, constants.CARD_HEIGHT),
             (0, 0),
+        )
+
+        body_text: ProseData = []
+        for question in self.staff_member.questions:
+            body_text.append({"text": question["question"], "type": TextType.h2})
+            body_text.append({"text": question["answer"], "type": TextType.body})
+
+        TextBuilder.add_body_to_canvas(
+            text=body_text,
+            canvas=self.canvas,
+            position=(constants.BACK_MARGIN_HORIZONTAL, 180),
+            max_width=constants.CARD_WIDTH - constants.BACK_MARGIN_HORIZONTAL * 2,
         )
 
         return self.canvas
