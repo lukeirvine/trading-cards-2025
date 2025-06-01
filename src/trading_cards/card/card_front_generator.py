@@ -27,11 +27,14 @@ class CardFrontGenerator:
         )
 
         # Add border to card
+        border_file_name = (
+            self.staff_member.optional_front_file or f"{self.staff_member.department.label}_front.png"
+        )
         ImageBuilder.add_mask_to_canvas(
             self.canvas,
             os.path.join(
                 constants.MATERIAL_PATH,
-                f"{self.staff_member.department.label}_front.png",
+                border_file_name,
             ),
             (constants.CARD_WIDTH, constants.CARD_HEIGHT),
             (0, 0),

@@ -34,6 +34,7 @@ class CSVReader:
                     answer_2=row["answer_2"],
                     question_3=row["question_3"],
                     answer_3=row["answer_3"],
+                    optional_front_file=row.get("optional_front_file", None),
                 )
                 staff_members.append(staff_member)
 
