@@ -5,6 +5,7 @@ from typing import List, TypedDict
 from PIL import Image
 
 from trading_cards.staff_member import Department
+from trading_cards.utils.logger import Logger, PrintColor
 
 
 class GeneratedImageMetadata(TypedDict):
@@ -62,7 +63,7 @@ class Exporter:
 
         # save the pdfs
         images[0].save(pdf_path, "PDF", resolution=100.0, save_all=True, append_images=images[1:])
-        print(f"PDF saved to {pdf_path}")
+        Logger.log(f"PDF saved to {pdf_path}", PrintColor.GREEN)
         rarity_images[0].save(
             pdf_rarity_path,
             "PDF",
@@ -70,4 +71,4 @@ class Exporter:
             save_all=True,
             append_images=rarity_images[1:],
         )
-        print(f"Rarity PDF saved to {pdf_rarity_path}")
+        Logger.log(f"Rarity PDF saved to {pdf_rarity_path}", PrintColor.GREEN)

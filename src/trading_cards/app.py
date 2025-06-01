@@ -5,6 +5,7 @@ from trading_cards.card.card_generator import CardGenerator
 from trading_cards.csv_reader import CSVReader
 from trading_cards.exporter import Exporter, GeneratedImageMetadata
 from trading_cards.staff_member import StaffMember
+from trading_cards.utils.logger import Logger
 
 
 class App:
@@ -28,9 +29,9 @@ class App:
         reader = CSVReader(self.csv_file_path, self.image_dir)
         staff_members: list[StaffMember] = reader.read_csv()
 
-        print("=========================================")
+        Logger.log_line()
         print("Generating cards...")
-        print("=========================================")
+        Logger.log_line()
 
         generator = CardGenerator(self.output_dir, self.image_dir)
         generated_image_metadata: List[GeneratedImageMetadata] = []
@@ -62,7 +63,7 @@ class App:
             )
             print(f"Generated card for {staff_member.name}")
 
-        print("=========================================")
+        Logger.log_line()
 
         if self.generate_pdfs:
             Exporter.save_pdf(
@@ -70,4 +71,3 @@ class App:
                 output_dir=self.output_dir,
                 debug_mode=self.debug_mode,
             )
-            print("PDFs generated successfully.")
