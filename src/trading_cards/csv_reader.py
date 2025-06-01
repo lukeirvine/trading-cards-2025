@@ -18,9 +18,7 @@ class CSVReader:
             reader = csv.DictReader(file)
             for i, row in enumerate(reader, start=2):
                 dept_str: str = row["department"]
-                try:
-                    department_enum: Department = Department(dept_str)
-                except ValueError:
+                if not Department.is_valid(dept_str):
                     errors.append(f"Invalid department '{dept_str}' on row {i}")
                     continue
                 staff_member = StaffMember(
@@ -28,7 +26,7 @@ class CSVReader:
                     name=row["name"],
                     position=row["position"],
                     years_worked=int(row["years_worked"]),
-                    department=department_enum,
+                    department=Department.get_enum_by_label(dept_str),
                     bible_verse=row["bible_verse"],
                     question_1=row["question_1"],
                     answer_1=row["answer_1"],

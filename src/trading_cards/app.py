@@ -45,7 +45,7 @@ class App:
 
             front_file_name = f"{staff_member.name}_front.png"
             back_file_name = f"{staff_member.name}_back.png"
-            save_dir = os.path.join(self.output_dir, staff_member.department.value)
+            save_dir = os.path.join(self.output_dir, staff_member.department.label)
             Helpers.save_canvas(
                 canvas=front_image,
                 file_name=front_file_name,

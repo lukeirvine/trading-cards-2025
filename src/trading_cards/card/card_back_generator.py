@@ -22,7 +22,7 @@ class CardBackGenerator:
             self.canvas,
             os.path.join(
                 constants.MATERIAL_PATH,
-                f"{self.staff_member.department.value}_back.png",
+                f"{self.staff_member.department.label}_back.png",
             ),
             (constants.CARD_WIDTH, constants.CARD_HEIGHT),
             (0, 0),
@@ -40,6 +40,7 @@ class CardBackGenerator:
             position=(constants.BACK_MARGIN_HORIZONTAL, body_start_pos),
             max_width=constants.CARD_WIDTH - constants.BACK_MARGIN_HORIZONTAL * 2,
             max_height=constants.CARD_HEIGHT - constants.BACK_MARGIN_BOTTOM - body_start_pos,
+            color=self.staff_member.department.text_color.value,
         )
 
         return self.canvas

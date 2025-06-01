@@ -33,15 +33,20 @@ class ProseItem(TypedDict):
 ProseData = List[ProseItem]
 
 
-class Department(str, Enum):
-    leadership = "leadership"
+class TextColor(tuple[int, int, int], Enum):
+    white = (255, 255, 255)
+    black = (0, 0, 0)
+
+
+class Department(Enum):
+    leadership = ("leadership", TextColor.black)
     extreme = "extreme"
     laundry = "laundry"
     office = "office"
     waterfront = "waterfront"
-    activities = "activities"
-    art = "art"
-    challenge = "challenge"
+    activities = ("activities", TextColor.black)
+    art = ("art", TextColor.black)
+    challenge = ("challenge", TextColor.black)
     communications = "communications"
     dt = "dt"
     equestrian = "equestrian"
@@ -49,6 +54,33 @@ class Department(str, Enum):
     maintenance = "maintenance"
     survival = "survival"
     ultimate = "ultimate"
-    programming = "programming"
+    programming = ("programming", TextColor.black)
     lifeguard = "lifeguard"
     null = "null"
+
+    def __init__(
+        self,
+        label: str,
+        text_color: TextColor = TextColor.white,
+    ):
+        self.label = label
+        self.text_color = text_color
+
+    def __getitem__(self, item: str):
+        if item == "label":
+            return self.label
+        elif item == "text_color":
+            return self.text_color
+        else:
+            raise AttributeError(f"{self.__class__.__name__} has no attribute '{item}'")
+
+    @staticmethod
+    def is_valid(label: str) -> bool:
+        return any(dept.label == label for dept in Department)
+
+    @staticmethod
+    def get_enum_by_label(label: str) -> "Department":
+        for dept in Department:
+            if dept.label == label:
+                return dept
+        raise ValueError(f"Invalid department label: {label}")

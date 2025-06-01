@@ -31,7 +31,7 @@ class CardFrontGenerator:
             self.canvas,
             os.path.join(
                 constants.MATERIAL_PATH,
-                f"{self.staff_member.department.value}_front.png",
+                f"{self.staff_member.department.label}_front.png",
             ),
             (constants.CARD_WIDTH, constants.CARD_HEIGHT),
             (0, 0),
@@ -56,6 +56,7 @@ class CardFrontGenerator:
             max_width=675,
             max_lines=1,
             vertical_align="center",
+            color=self.staff_member.department.text_color.value,
         )
 
         # Stars
@@ -70,6 +71,7 @@ class CardFrontGenerator:
                 mask_path=os.path.join(constants.MATERIAL_PATH, "star.png"),
                 size=(star_size, star_size),
                 position=(11, 150 + i * increment),
+                fill=self.staff_member.department.text_color.value,
             )
 
         return self.canvas
