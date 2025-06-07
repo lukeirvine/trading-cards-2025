@@ -54,7 +54,7 @@ class TextBuilder:
                     f"Y position: {y_pos}",
                     PrintColor.YELLOW,
                 )
-                font_size_adjustment += 1
+                font_size_adjustment += 0.5
                 y_pos = position[1]
             else:
                 skip_draw = False
@@ -82,7 +82,7 @@ class TextBuilder:
         position: tuple[int, int] = (0, 0),
         color: tuple[int, int, int] = (0, 0, 0),
         skip_draw: bool = False,
-        font_size_adjustment: int = 0,
+        font_size_adjustment: float = 0,
     ) -> TextResults:
         font_size = type.base_size - font_size_adjustment
         font = TextBuilder.get_font(type.font_path, font_size)
@@ -175,8 +175,8 @@ class TextBuilder:
         }
 
     @staticmethod
-    def get_font(font_path: str, font_size: int) -> ImageFont.FreeTypeFont:
-        font = ImageFont.truetype(font_path, font_size)
+    def get_font(font_path: str, font_size: float) -> ImageFont.FreeTypeFont:
+        font = ImageFont.truetype(font_path, font_size)  # type: ignore[arg-type]
 
         # Measure the text height
         dummy_text = "A"
