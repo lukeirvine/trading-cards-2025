@@ -109,6 +109,12 @@ python src/trading_cards/main.py
 python watcher.py
 ```
 
+## Contributing
+
+A pre-commit script is configured to run on each commit and will only permit commits if formatting and typing are correct and testing runs successfully.
+
+Often, a commit will fail, but black and/or isort will make necessary changes for you, and you can create a successful commit by simply running the commit command again.
+
 ## For 2026 Trading Cards:
 
 1. Create a new repo for 2026
