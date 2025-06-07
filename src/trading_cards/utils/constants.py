@@ -19,7 +19,7 @@ class Constants:
 
     # Styles ========================
     HEADING_FONT: str = "fonts/Cleanow-j9v60.ttf"
-    BODY_FONT: str = "fonts/Cleanow-j9v60.ttf"
+    BODY_FONT: str = "fonts/BarlowSemiCondensed-Medium.ttf"
 
 
 constants: Constants = Constants()

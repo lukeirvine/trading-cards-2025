@@ -30,7 +30,7 @@ class CardBackGenerator:
 
         body_text: ProseData = []
         for question in self.staff_member.questions:
-            body_text.append({"text": question["question"], "type": TextType.h2})
+            body_text.append({"text": question["question"], "type": TextType.h3})
             body_text.append({"text": question["answer"], "type": TextType.body})
 
         body_start_pos = 180

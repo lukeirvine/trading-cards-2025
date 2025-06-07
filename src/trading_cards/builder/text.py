@@ -164,11 +164,13 @@ class TextBuilder:
             )
 
         if not skip_draw:
-            TextBuilder.draw_lines_on_canvas(canvas, wrapped_lines, font, position, color)
+            TextBuilder.draw_lines_on_canvas(canvas, wrapped_lines, font, type, position, color)
 
         return {
             "line_count": len(wrapped_lines),
-            "line_height": (get_text_size(wrapped_lines[0], font)[1] if wrapped_lines else 0),
+            "line_height": (
+                int(get_text_size(wrapped_lines[0], font)[1] * type.leading) if wrapped_lines else 0
+            ),
             "lines": wrapped_lines,
         }
 
@@ -194,6 +196,7 @@ class TextBuilder:
         canvas: Image.Image,
         lines: list[str],
         font: ImageFont.FreeTypeFont,
+        textType: TextType,
         position: tuple[int, int] = (0, 0),
         color: tuple[int, int, int] = (0, 0, 0),
     ) -> None:
@@ -201,4 +204,6 @@ class TextBuilder:
         pos = list(position)
         for line in lines:
             draw.text(tuple(pos), line, font=font, fill=color)  # type: ignore[reportUnknownArgumentType]
-            pos[1] += TextBuilder.get_text_size(draw, line, font)[1]  # Move down for the next line
+            pos[1] += int(
+                TextBuilder.get_text_size(draw, line, font)[1] * textType.leading
+            )  # Move down for the next line

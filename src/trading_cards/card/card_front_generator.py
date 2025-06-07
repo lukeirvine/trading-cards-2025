@@ -40,7 +40,7 @@ class CardFrontGenerator:
             (0, 0),
         )
 
-        # Add text to card
+        # Add position to card.
         TextBuilder.add_text_to_canvas(
             text=self.staff_member.position,
             canvas=self.canvas,
@@ -51,6 +51,7 @@ class CardFrontGenerator:
             vertical_align="center",
         )
 
+        # Add name to card.
         TextBuilder.add_text_to_canvas(
             text=self.staff_member.name,
             canvas=self.canvas,

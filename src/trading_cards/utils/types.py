@@ -6,10 +6,10 @@ from trading_cards.utils.constants import constants
 
 # This should be used for different font types, not sizes.
 class TextType(Enum):
-    h1 = ("h1", 60, constants.HEADING_FONT, 20)
-    h2 = ("h2", 28, constants.HEADING_FONT, 12)
-    h3 = ("h3", 22, constants.HEADING_FONT, 20)
-    body = ("body", 18, constants.BODY_FONT, 40)
+    h1 = ("h1", 60, constants.HEADING_FONT, 20, 1.2)
+    h2 = ("h2", 28, constants.HEADING_FONT, 12, 1.2)
+    h3 = ("h3", 24, constants.HEADING_FONT, 12, 1.2)
+    body = ("body", 18, constants.BODY_FONT, 40, 1.2)
 
     def __init__(
         self,
@@ -17,10 +17,11 @@ class TextType(Enum):
         base_size: int,
         font_path: str,
         margin_after: int,
+        leading: float = 1,
     ):
-        # `label` isn’t strictly needed beyond repr, but you could use it for debugging.
         self._label = label
         self.base_size = base_size
+        self.leading = leading
         self.font_path = font_path
         self.margin_after = margin_after
 
