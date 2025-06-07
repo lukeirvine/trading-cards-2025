@@ -43,9 +43,6 @@ coverage.xml
 # PyLint
 .pylint.d/
 
-# VSCode settings
-.vscode/
-
 # Local environment variables
 .env.local
 .env.*.local
