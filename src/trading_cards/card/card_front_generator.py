@@ -5,7 +5,7 @@ from PIL import Image
 
 from trading_cards.builder.image import ImageBuilder
 from trading_cards.builder.text import TextBuilder
-from trading_cards.staff_member import StaffMember
+from trading_cards.entities.staff_member import StaffMember
 from trading_cards.utils.constants import constants
 from trading_cards.utils.types import TextType
 

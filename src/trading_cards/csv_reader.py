@@ -1,8 +1,9 @@
 import csv
 import os
 
+from trading_cards.entities.staff_member import StaffMember
 from trading_cards.error import CsvReaderError
-from trading_cards.staff_member import Department, StaffMember
+from trading_cards.utils.types import Department
 
 
 class CSVReader:

@@ -7,7 +7,7 @@ from PIL import Image
 from trading_cards.builder.shape import ShapeBuilder
 from trading_cards.card.card_back_generator import CardBackGenerator
 from trading_cards.card.card_front_generator import CardFrontGenerator
-from trading_cards.staff_member import StaffMember
+from trading_cards.entities.staff_member import StaffMember
 from trading_cards.utils.constants import constants
 
 

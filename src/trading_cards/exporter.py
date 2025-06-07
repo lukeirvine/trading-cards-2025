@@ -4,7 +4,7 @@ from typing import List, TypedDict
 
 from PIL import Image
 
-from trading_cards.staff_member import Department
+from trading_cards.entities.staff_member import Department
 from trading_cards.utils.logger import Logger, PrintColor
 
 

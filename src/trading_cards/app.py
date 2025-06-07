@@ -3,8 +3,8 @@ from typing import List
 
 from trading_cards.card.card_generator import CardGenerator, Side
 from trading_cards.csv_reader import CSVReader
+from trading_cards.entities.staff_member import StaffMember
 from trading_cards.exporter import Exporter, GeneratedImageMetadata
-from trading_cards.staff_member import StaffMember
 from trading_cards.utils.logger import Logger
 
 
