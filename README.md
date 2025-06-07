@@ -55,21 +55,37 @@ poetry install
 ## Project Structure
 
 ```
-trading-cards-2025/
-├── classes/              # Core application classes
-│   ├── card_app.py      # Main application logic
-│   ├── card_front_generator.py  # Card front generation
-│   └── csv_reader.py    # CSV data processing
-├── utils/               # Utility functions
-│   └── utils.py        # Helper functions and constants
-├── materials/          # Design assets
-│   ├── border.svg      # Card border template
-│   ├── job_container.svg  # Job title container
-│   └── star.svg        # Star template
-├── fonts/              # Font files
-│   └── PoetsenOne-Regular.ttf
-├── images/            # Staff images
-└── requirements.txt   # Python dependencies
+TRADING-CARDS-2025/
+├── .vscode/
+│   └── settings.json
+├── fonts/ # font files referenced in src/trading_cards/utils/constants
+├── images/ # for images of staff members
+├── input/ # for your csv files
+├── materials/ # contains design image files
+├── output/ # for output files
+├── src/
+│   └── trading_cards/
+│       ├── app.py
+│       ├── main.py
+│       ├── builder/ # methods for manipulating Pillow canvases
+│       │   ├── image.py
+│       │   ├── shape.py
+│       │   └── text.py
+│       ├── card/
+│       │   ├── card_generator.py # glues together front/back generators
+│       │   ├── card_front_generator.py # edit to fit design
+│       │   └── card_back_generator.py # edit to fit design
+│       ├── entities/
+│       │   └── staff_member.py # handles information from csv
+│       ├── utils/
+│       │   ├── constants.py
+│       │   ├── error.py
+│       │   ├── helpers.py
+│       │   ├── logger.py # helpful for logging in color
+│       │   └── types.py
+│       └── worker/
+│           ├── csv_reader.py # parses and verifies csv file
+│           └── exporter.py
 ```
 
 ## Usage
