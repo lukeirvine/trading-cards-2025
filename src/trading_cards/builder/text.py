@@ -3,6 +3,7 @@ from typing import Optional, TypedDict
 
 from PIL import Image, ImageDraw, ImageFont
 
+from trading_cards.utils.constants import constants
 from trading_cards.utils.logger import Logger, PrintColor
 from trading_cards.utils.types import ProseData, TextType
 
@@ -112,7 +113,6 @@ class TextBuilder:
         original_height: int = get_text_size(text, font)[1]
 
         # Respect max_lines by shrinking the font if needed
-        wrap_adjustment = 1.65
         if max_lines is not None:
             current_size = font_size
             while True:
@@ -126,7 +126,7 @@ class TextBuilder:
                 wrap_w = calculate_wrap_width(font)
                 wrap_w = max(wrap_w, 1)
 
-                lines = textwrap.wrap(text, width=int(wrap_w * wrap_adjustment))
+                lines = textwrap.wrap(text, width=int(wrap_w * constants.WRAP_HEURISTIC))
                 # enforce max width: measure longest wrapped line
                 max_line_width = max(get_text_size(line, font)[0] for line in lines) if lines else 0
                 # stop if it fits or font is already minimal
@@ -144,7 +144,7 @@ class TextBuilder:
                 else TextBuilder.get_font(type.font_path, current_size)
             )
         else:
-            wrapped_lines = textwrap.wrap(text, width=int(wrap_width * wrap_adjustment))
+            wrapped_lines = textwrap.wrap(text, width=int(wrap_width * constants.WRAP_HEURISTIC))
 
         # Calculate height of the text block
         # text_height = sum(get_text_size(line, font)[1] for line in wrapped_lines)
