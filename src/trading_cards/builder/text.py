@@ -25,6 +25,7 @@ class TextBuilder:
         color: tuple[int, int, int] = (0, 0, 0),
     ) -> Image.Image:
         font_size_adjustment = 0
+        reattempts = 0
         skip_draw = True
         while True:
             y_pos: int = position[1]
@@ -50,14 +51,18 @@ class TextBuilder:
             if max_height is not None and y_pos > position[1] + max_height:
                 Logger.log(
                     "Adjusted back font size. "
-                    f"Max pos: {position[1] + max_height if max_height else None}, "
-                    f"Y position: {y_pos}",
+                    f"Max pos was {position[1] + max_height if max_height else None}, "
+                    f"Y position was {y_pos}",
                     PrintColor.YELLOW,
                 )
                 font_size_adjustment += 0.5
                 y_pos = position[1]
+                reattempts += 1
             else:
                 skip_draw = False
+
+        if reattempts >= 4:
+            Logger.log("Back text might be too small.", PrintColor.RED)
 
         return canvas
 

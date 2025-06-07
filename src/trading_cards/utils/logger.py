@@ -17,5 +17,5 @@ class Logger:
         print(f"{color.value}{message}{PrintColor.RESET.value}")
 
     @staticmethod
-    def log_line(color: PrintColor = PrintColor.MAGENTA) -> None:
+    def log_line(color: PrintColor = PrintColor.CYAN) -> None:
         print(f"{color.value}{'=' * 40}{PrintColor.RESET.value}")
