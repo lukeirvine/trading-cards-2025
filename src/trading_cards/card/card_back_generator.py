@@ -41,6 +41,7 @@ class CardBackGenerator:
             max_width=constants.CARD_WIDTH - constants.BACK_MARGIN_HORIZONTAL * 2,
             max_height=constants.CARD_HEIGHT - constants.BACK_MARGIN_BOTTOM - body_start_pos,
             color=self.staff_member.department.text_color.value,
+            body_indent=constants.BODY_INDENT,
         )
 
         return self.canvas

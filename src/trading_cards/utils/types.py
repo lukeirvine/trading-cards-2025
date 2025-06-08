@@ -8,8 +8,8 @@ from trading_cards.utils.constants import constants
 class TextType(Enum):
     h1 = ("h1", 60, constants.HEADING_FONT, 20, 1.2)
     h2 = ("h2", 28, constants.HEADING_FONT, 12, 1.2)
-    h3 = ("h3", 24, constants.HEADING_FONT, 12, 1.2)
-    body = ("body", 20, constants.BODY_FONT, 40, 1.2)
+    h3 = ("h3", 25, constants.HEADING_FONT, 12, 1.2)
+    body = ("body", 20, constants.BODY_FONT, 30, 1.2)
 
     def __init__(
         self,

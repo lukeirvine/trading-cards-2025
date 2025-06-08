@@ -23,6 +23,7 @@ class TextBuilder:
         max_height: Optional[int] = None,
         position: tuple[int, int] = (0, 0),
         color: tuple[int, int, int] = (0, 0, 0),
+        body_indent: int = 0,
     ) -> Image.Image:
         font_size_adjustment = 0
         reattempts = 0
@@ -31,12 +32,15 @@ class TextBuilder:
             y_pos: int = position[1]
             results: TextResults
             for item in text:
+                indent = 0
+                if item["type"] == TextType.body:
+                    indent = body_indent
                 results = TextBuilder.add_text_to_canvas(
                     text=item["text"],
                     canvas=canvas,
                     type=item["type"],
                     max_width=max_width,
-                    position=(position[0], y_pos),
+                    position=(position[0] + indent, y_pos),
                     color=color,
                     skip_draw=skip_draw,
                     font_size_adjustment=font_size_adjustment,

@@ -15,6 +15,7 @@ class Constants:
     BACK_MARGIN_HORIZONTAL: int = 40
     BACK_MARGIN_BOTTOM: int = 150
     BACK_MARGIN: int = 50
+    BODY_INDENT: int = 20
     # Styles ========================
     HEADING_FONT: str = "fonts/Cleanow-j9v60.ttf"
     BODY_FONT: str = "fonts/BarlowSemiCondensed-Medium.ttf"
