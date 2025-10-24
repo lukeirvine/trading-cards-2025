@@ -2,6 +2,11 @@
 
 A Python-based system for generating custom trading cards with staff information from a csv file. The intent is to accumulate a library of helpful methods for adding text and images to a Pillow canvas, so minimal work is needed to design trading cards in future years.
 
+<p align="center">
+  <img src="./demo_front.png" alt="Sample trading card front" width="45%" />
+  <img src="./demo_back.png" alt="Sample trading card back" width="45%" />
+</p>
+
 ## Features
 
 - Generate trading cards from staff data in CSV format
